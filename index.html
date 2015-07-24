@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GNT</title>
+    <style>
+    body {
+        background: url(gnt.jpg) no-repeat;
+        background-size: cover;
+    }
+    
+    .counter {
+        font-family: 'Helvetica Neue';
+        font-weight: 100;
+        font-size: 200px;
+        color: #fff;
+        text-shadow: 2px 2px 20px #000;
+        text-align: center;
+        margin-top: -100px;
+        top: 50%;
+        position: absolute;
+        width: 100%
+    }
+    
+    .zero {
+        color: red;
+    }
+    
+    .container {
+        height: 100% position: relative;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="counter"></div>
+    </div>
+    <script>
+    function pad(num) {
+        return (num + '').length > 1 ? num : '0' + num;
+    };
+
+    function getNextDayOfWeek(date, dayOfWeek) {
+        var resultDate = new Date(date.getTime());
+        resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7);
+        return resultDate;
+    }
+
+    var counter = document.querySelector('.counter');
+    var gnt = new Date();
+    gnt.setHours(16);
+    gnt.setMinutes(0);
+    gnt.setSeconds(0);
+
+    gnt = getNextDayOfWeek(gnt, 5);
+
+
+    function countdown() {
+        var now = new Date();
+        var timeToGNT = new Date(gnt - now);
+        var days = Math.floor(timeToGNT / 1000 / 60 / 60 / 24) - 1;
+        var text = '';
+        if (days >= 1) {
+            text += days + ' day' + (days > 1 ? 's ' : ' ');
+        }
+        if (timeToGNT > 0) {
+            text += pad(timeToGNT.getHours()) + ':' +
+                pad(timeToGNT.getMinutes()) + ':' +
+                pad(timeToGNT.getSeconds());
+        } else {
+            text = 'It\'s GNT o\'clock!';
+            // counter.classList.add('zero');
+        }
+        counter.innerText = text;
+    }
+
+    countdown();
+    window.setInterval(countdown, 1000);
+    </script>
+</body>
+
+</html>
